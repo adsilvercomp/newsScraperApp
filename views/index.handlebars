@@ -1,0 +1,20 @@
+<h1>hello</h1>
+
+
+<h1>Scraper Homework</h1>
+<div id="wrapper">
+    <h1>Note Scraper</h1>
+    <h2>
+        <i>If you can do this...the homework should be no problem.</i>
+    </h2>
+    <ul id="articles">
+        {{#each articles}} 
+            <li>Headline: {{headline}}</li>
+            <li>Link: {{link}}</li>
+            <li>:summary: {{summary}}</li>
+            <br/>
+            <br/>
+        {{/each}}
+    </ul>
+    <div id="notes"></div>
+</div>
