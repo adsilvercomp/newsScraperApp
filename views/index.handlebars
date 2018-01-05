@@ -1,17 +1,19 @@
-<h1>hello</h1>
-
-
-<h1>Scraper Homework</h1>
+<h1>News Scraper Application</h1>
 <div id="wrapper">
-    <h1>Note Scraper</h1>
     <h2>
-        <i>If you can do this...the homework should be no problem.</i>
+        Articles in the New York Times World Section
     </h2>
     <ul id="articles">
         {{#each articles}} 
             <li>Headline: {{headline}}</li>
             <li>Link: {{link}}</li>
-            <li>:summary: {{summary}}</li>
+            <li>Summary: {{summary}}</li>
+            <input id="titleinput" type="text" name="note" size="100">
+            <br/>
+            <input id="bodyinput" type="text" name="note" size="100">
+            <br/>
+            <button class="comment" type="button">Add Comment</button>
+            <button class="delete" type="button">Delete Comment</button>
             <br/>
             <br/>
         {{/each}}

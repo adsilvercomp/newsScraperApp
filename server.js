@@ -19,7 +19,7 @@ var app = express();
 
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
-app.use(express.static("public/views"));
+app.use(express.static("public/"));
 
 
 // Set mongoose to leverage built in JavaScript ES6 Promises
@@ -96,7 +96,7 @@ app.get("/scrape", function (req, res) {
                     .create(result)
                     .then(function (dbArticle) {
                         // If we were able to successfully scrape and save an Article, send a message to the client
-                        console.log(" THIS IS DB ARTICLE " + dbArticle);
+                       // console.log(" THIS IS DB ARTICLE " + dbArticle);
 
                     })
                     .catch(function (err) {
@@ -117,17 +117,17 @@ app.get("/articles", function (req, res) {
     // Grab every document in the Articles collection
     db.Article
         .find({})
-        .then(function (dbArticle) {
+        .then(function (dbArticles) {
             // If we were able to successfully find Articles, send them back to the client
-            console.log(dbArticle);
+            console.log(dbArticles);
 
             var hbsObject = {
-                articles: dbArticle
-              };
-              console.log(hbsObject);
-              res.render("index", hbsObject);
+                articles: dbArticles
+            };
+            console.log(hbsObject);
+            res.render("index", hbsObject);
+            
 
-            // res.render("index", {dbArticle: res});
         })
         .catch(function (err) {
             // If an error occurred, send it to the client
@@ -146,17 +146,46 @@ app.get("/", function (req, res) {
     // db.find({}, function (err, docs) {
     //     var obj = dbArticle
     //     res.render('index', obj);
-//});
+    //});
 
-        db.Article
-    .find({})
-    .then(function(dbArticle) {
-      // If we were able to successfully find Articles, send them back to the client
-      res.render(dbArticle);
-    })
+    // db.Article
+    //     .find({})
+    //     .then(function (dbArticle) {
+    //         // If we were able to successfully find Articles, send them back to the client
+    //         res.render(dbArticle);
+    //     })
 
-    
+
 });
+
+
+
+
+// Route for saving/updating an Article's associated Note
+app.post("/articles/:id", function(req, res) {
+    // Create a new note and pass the req.body to the entry
+    db.Note
+      .create(req.body)
+      .then(function(dbNote) {
+        // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
+        // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
+        // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
+        return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
+      })
+      .then(function(dbArticle) {
+        // If we were able to successfully update an Article, send it back to the client
+        res.json(dbArticle);
+      })
+      .catch(function(err) {
+        // If an error occurred, send it to the client
+        res.json(err);
+      });
+  });
+  
+  // Start the server
+  app.listen(PORT, function() {
+    console.log("App running on port " + PORT + "!");
+  });
 
 
 
