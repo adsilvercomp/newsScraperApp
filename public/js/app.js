@@ -1,11 +1,12 @@
 // Now make an ajax call for the Article
 $(document).ready(function () {
-  //     //you need to add click events to initiate these ajax calls
-  //     $(".comment").on("click", function (event) {
-  //       alert("Handler for .click() called.");
-  //     });
+  
+  //you need to add click events to initiate these ajax calls
+  // $(".comment").on("click", function (event) {
+  //   alert("Handler for .click() called.");
+  // });
 
-  //});
+  // });
   // $.ajax({
   //   //making a get request from the articles route
   //   method: "GET",
@@ -31,25 +32,37 @@ $(document).ready(function () {
   //       $("#bodyinput").val(data.note.body);
   //     }
   //   });
+  // Grab the articles as a json
+  alert("so far so good");
+$.getJSON("/articles", function(data) {
+  console.log(data);
+ 
+  // For each one
+  for (var i = 0; i < data.length; i++) {
+    // Display the apropos information on the page
+    $("#articleId").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
+  }
+});
 
 
-  // // When you click the savenote button
+  // When you click the savenote button
   $(document).on("click", ".comment", function () {
-    alert("This is working");
+    alert("so far so good");
     // Grab the id associated with the article from the submit button
-    var thisId = $(this).attr("data-id");
+    var thisId = $("#titleinput").attr("data-id");
+    console.log( $("#titleinput").val());
 
-    // Run a POST request to change the note, using what's entered in the inputs
+    let data = {
+      title: $("#titleinput").val(),
+      body: $("#bodyinput").val()
+    }
+
+//    Run a POST request to change the note, using what's entered in the inputs
     $.ajax({
-      method: "POST",
+      type: "POST",
       url: "/articles/" + thisId,
-      data: {
-        // Value taken from title input
-        title: $("#titleinput").val(),
-        // Value taken from note textarea
-        body: $("#bodyinput").val()
-      }
-    })
+      data: data
+      })
       // With that done
       .done(function (data) {
         // Log the response

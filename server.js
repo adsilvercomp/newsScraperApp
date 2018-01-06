@@ -164,6 +164,8 @@ app.get("/", function (req, res) {
 // Route for saving/updating an Article's associated Note
 app.post("/articles/:id", function(req, res) {
     // Create a new note and pass the req.body to the entry
+    
+    console.log("correct:" + req.body);
     db.Note
       .create(req.body)
       .then(function(dbNote) {
@@ -178,7 +180,9 @@ app.post("/articles/:id", function(req, res) {
       })
       .catch(function(err) {
         // If an error occurred, send it to the client
+        console.log(err);
         res.json(err);
+        
       });
   });
   
@@ -209,10 +213,7 @@ app.post("/articles/:id", function(req, res) {
 
 
 
-// Start the server
-app.listen(PORT, function () {
-    console.log("App running on port " + PORT + "!");
-});
+
 
 
 //figure out how to make the handlebars files render the necessary routes

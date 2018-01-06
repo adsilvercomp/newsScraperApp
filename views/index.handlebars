@@ -5,10 +5,10 @@
     </h2>
     <ul id="articles">
         {{#each articles}} 
-            <li>Headline: {{headline}}</li>
+            <li id="articleId">Headline: {{headline}}</li>
             <li>Link: {{link}}</li>
             <li>Summary: {{summary}}</li>
-            <input id="titleinput" type="text" name="note" size="100">
+            <input data-id= "test" id="titleinput" type="text" name="note" size="100">
             <br/>
             <input id="bodyinput" type="text" name="note" size="100">
             <br/>
